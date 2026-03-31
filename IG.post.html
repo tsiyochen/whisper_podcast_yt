@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whisper Podcast IG 模板 - 暮色橘系列</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@600;900&display=swap"
+        rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'jf-openhuninn';
+            src: url('https://cdn.jsdelivr.net/gh/justfont/open-huninn-font@2.1/font/jf-openhuninn-2.1.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            /* 核心色系：暮色橘 */
+            --theme-color: #E08D79;
+            --white: #ffffff;
+            --off-white: #FAF7F6;
+            /* 極淺粉白，用於大面積背景 */
+            --ai-bubble: #F4EBE8;
+            /* 溫暖的淺米粉 */
+            --dark-text: #4A3E3B;
+            /* 帶點暖調的深褐灰，比黑更柔和 */
+            --navy-deep: #2C3E50;
+            /* 深色壓陣色 */
+
+            --shadow: 0 10px 30px rgba(224, 141, 121, 0.12);
+        }
+
+        body {
+            margin: 0;
+            padding: 50px 0;
+            background-color: #f2f2f2;
+            font-family: 'Noto Sans TC', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+        }
+
+        /* IG 貼文通用容器 (1:1 比例) */
+        .ig-post {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            z-index: 0;
+            /* 這裡非常重要！設定基底層級，讓櫻花不會躲到最背景後面去 */
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 45px;
+            box-sizing: border-box;
+            background-color: var(--white);
+        }
+
+        .label {
+            font-size: 13px;
+            color: var(--theme-color);
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+        }
+
+        /* --- 風格 1: 極簡語錄 (優雅層次) --- */
+        .style-minimal {
+            background: radial-gradient(circle at top left, var(--white) 0%, #FFF2F0 100%);
+            text-align: center;
+            padding-bottom: 95px;
+            /* 利用加重底部邊距推高內部文字，而非使用 transform 避免破壞包含塊 */
+        }
+
+        /* 櫻花點綴 (共5片，移除最下方的兩朵) */
+        .style-minimal::before,
+        .style-minimal .quote-mark::before,
+        .style-minimal .quote-mark::after,
+        .style-minimal .quote::before,
+        .style-minimal .quote::after {
+            content: "❀";
+            position: absolute;
+            color: rgba(240, 100, 64, 0.08);
+            /* 微微的填充色 */
+            -webkit-text-stroke: 0.6px rgba(224, 141, 121, 0.24);
+            /* 調整：變細為1px，透明度改淡為 0.24 */
+            pointer-events: none;
+            z-index: -1;
+            opacity: 1;
+            /* 由色彩控制透明度 */
+        }
+
+        /* 受到 quote-mark 本身 opacity: 0.25 影響，微調色彩參數以保持視覺一致 */
+        .style-minimal .quote-mark::before,
+        .style-minimal .quote-mark::after {
+            color: rgba(224, 141, 121, 0.35);
+            -webkit-text-stroke: 0.6px rgba(235, 154, 96, 0.6);
+            /* 調整：等效為 0.15 的透明度 */
+        }
+
+        /* 1: 原左上角 */
+        .style-minimal::before {
+            font-size: 40px;
+            top: 40px;
+            left: 70px;
+            transform: rotate(-15deg);
+        }
+
+        /* 2: 新增左上角之一 (位置稍低偏左) */
+        .style-minimal .quote-mark::after {
+            font-size: 45px;
+            top: 90px;
+            left: -18px;
+            transform: rotate(35deg);
+        }
+
+
+        /* 4: 原右上角 */
+        .style-minimal .quote-mark::before {
+            font-size: 48px;
+            top: 50px;
+            right: 60px;
+            transform: rotate(45deg);
+        }
+
+        /* 5: 中右上 */
+        .style-minimal .quote::after {
+            font-size: 40px;
+            top: 180px;
+            right: 90px;
+            transform: rotate(15deg);
+        }
+
+        /* 6: 左下側 */
+        .style-minimal .quote::before {
+            font-size: 35px;
+            bottom: 150px;
+            left: 45px;
+            transform: rotate(-30deg);
+        }
+
+
+        .style-minimal .quote-mark {
+            font-family: 'Noto Serif TC';
+            font-size: 100px;
+            color: var(--theme-color);
+            opacity: 0.25;
+            margin-bottom: -40px;
+        }
+
+        .style-minimal .quote {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 28px;
+            line-height: 1.8;
+            color: var(--dark-text);
+            z-index: 1;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+
+            /* --- IG 排版安全設定 --- */
+            max-width: 340px;
+            /* 限制最大寬度，確保左右都預留至少 80px 以上的安全邊距，避免 IG 首頁被切邊 */
+            margin: 0 auto;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 30px;
+            font-size: 12px;
+            letter-spacing: 4px;
+            color: var(--theme-color);
+        }
+
+        .style-minimal .footer {
+            border-top: 1px solid rgba(224, 141, 121, 0.3);
+            padding-top: 10px;
+            bottom: 45px;
+            padding: 10px 20px 0;
+        }
+
+        /* --- 風格 2: 播放器介面 (現代雜誌感) --- */
+        .style-player {
+            background-color: var(--off-white);
+        }
+
+        .style-player .album-art {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            margin-bottom: 35px;
+            background: var(--theme-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 15px 35px rgba(224, 141, 121, 0.3);
+            background: linear-gradient(135deg, var(--theme-color), #C97A68);
+        }
+
+        .style-player .album-art span {
+            color: white;
+            font-size: 18px;
+            letter-spacing: 5px;
+            font-weight: bold;
+            opacity: 0.9;
+        }
+
+        .style-player .track-info {
+            width: 100%;
+        }
+
+        .style-player .quote-text {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--navy-deep);
+        }
+
+        .style-player .podcast-name {
+            font-size: 14px;
+            color: var(--theme-color);
+            margin-bottom: 25px;
+        }
+
+        .style-player .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #E5E5E5;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .style-player .progress-fill {
+            width: 60%;
+            height: 100%;
+            background: var(--theme-color);
+            border-radius: 2px;
+        }
+
+        /* --- 風格 3: 對話框 (溫馨療癒) --- */
+        .style-dialogue {
+            background-color: var(--white);
+            justify-content: flex-start;
+            padding-top: 80px;
+        }
+
+        .bubble {
+            max-width: 80%;
+            padding: 16px 20px;
+            border-radius: 22px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .bubble.left {
+            align-self: flex-start;
+            background: var(--ai-bubble);
+            color: var(--dark-text);
+            border-bottom-left-radius: 4px;
+        }
+
+        .bubble.right {
+            align-self: flex-end;
+            background: var(--theme-color);
+            color: var(--white);
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 15px rgba(224, 141, 121, 0.2);
+        }
+
+        .style-dialogue .input-mockup {
+            position: absolute;
+            bottom: 70px;
+            width: 85%;
+            height: 50px;
+            background: var(--off-white);
+            border: 1px solid #eee;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            color: #A09390;
+            font-size: 14px;
+        }
+
+        .style-dialogue .send-btn {
+            color: var(--theme-color);
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+        <div class="label">Style 01 - 暮色語錄</div>
+        <div class="ig-post style-minimal">
+            <div class="quote-mark">“</div>
+            <div class="quote">
+                高配得感不是驕傲，<br>是打從心底相信：我值得這一切
+            </div>
+            <div class="footer">
+                <img src="whisper-logo.png" alt="Logo"
+                    style="height: 16px; vertical-align: middle; margin-right: 6px; transform: translateY(-1px);">Whisper
+                | <span style="font-family: 'jf-openhuninn', sans-serif;">她的悄悄話</span>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="label">Style 02 - 沉浸播放</div>
+        <div class="ig-post style-player">
+            <img class="album-art" src="Whisper 她的悄悄話 LOGO.png" alt="Whisper Logo"
+                style="object-fit: cover; background: none;">
+            <div class="track-info">
+                <div class="quote-text">撕掉名片標籤，勾勒職稱之外的「人生藍圖」</div>
+                <div class="podcast-name">【20、30、35 歲成長回顧】誠實對談</div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            <div class="footer">
+                <img src="whisper-logo.png" alt="Logo"
+                    style="height: 16px; vertical-align: middle; margin-right: 6px; transform: translateY(-1px);">Whisper
+                | <span style="font-family: 'jf-openhuninn', sans-serif;">她的悄悄話</span>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="label">Style 02 - 沉浸播放 (原版)</div>
+        <div class="ig-post style-player">
+            <div class="album-art"><span>人生藍圖</span></div>
+            <div class="track-info">
+                <div class="quote-text">撕掉名片標籤，勾勒職稱之外的「人生藍圖」</div>
+                <div class="podcast-name">【20、30、35 歲成長回顧】誠實對談</div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            <div class="footer">
+                <img src="whisper-logo.png" alt="Logo"
+                    style="height: 16px; vertical-align: middle; margin-right: 6px; transform: translateY(-1px);">Whisper
+                | <span style="font-family: 'jf-openhuninn', sans-serif;">她的悄悄話</span>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="label">Style 03 - 樹洞對話</div>
+        <div class="ig-post style-dialogue">
+            <div class="bubble left">我不知道該怎麼拒絕別人...</div>
+            <div class="bubble right">親愛的，拒絕不代表冷漠，<br>而是你在保護自己的能量。</div>
+            <div class="input-mockup">
+                <span>輕輕訴說妳的故事...</span>
+                <div class="send-btn">●</div>
+            </div>
+            <div class="footer">
+                <img src="whisper-logo.png" alt="Logo"
+                    style="height: 16px; vertical-align: middle; margin-right: 6px; transform: translateY(-1px);">Whisper
+                | <span style="font-family: 'jf-openhuninn', sans-serif;">她的悄悄話</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ▼▼▼ 這是批量產生卡片的程式碼 ▼▼▼ -->
+    <script>
+        // 1. 在這裡放進所有你想產生的語錄（使用雙引號包起來，並用逗號隔開）
+        // 如果遇到某張卡片字比較多，可以加上大括號 {}，並利用 fontSize 來縮小字體 (預設是 28px) 
+        const myQuotes = [
+            {
+                text: "不再把名片當作價值的全部，<br>工作只是建構生活的一塊拼圖",
+                fontSize: "26px" // ← 第一張卡片的字體大小
+            },
+            {
+                text: "二十歲時對未來感到焦慮，<br>三十五歲後反而開始期待<br>下一個十年的樣貌",
+                fontSize: "28px" // ← 針對這張卡片調整字體大小 (自由修改數值)
+            },
+            {
+                text: "追求「人生的總和」，<br>而不只是單一面向的成就",
+                fontSize: "28px" // ← 第三張卡片的字體大小
+            }
+        ];
+
+        // 2. 抓取網頁中原本的第一個區塊 (Style 01) 作為模板
+        const template = document.querySelectorAll('body > div')[0];
+
+        // 3. 讓程式自動拿上面的語錄陣列來替換文字並新增卡片
+        myQuotes.forEach((item, i) => {
+            // 自動判斷是原本的純文字，還是帶有設定的物件
+            const isObject = typeof item === 'object';
+            const text = isObject ? item.text : item;
+            const fontSize = isObject ? item.fontSize : '';
+
+            // 完整複製一份模板
+            const newPost = template.cloneNode(true);
+
+            // 更改卡片上方的小標籤文字，方便辨識
+            const labelTag = newPost.querySelector('.label');
+            if (labelTag) {
+                labelTag.innerHTML = `Style 01 - 自動產生 ${i + 1}`;
+            }
+
+            // 替換掉卡片中央的語錄文字
+            const quoteContent = newPost.querySelector('.quote');
+            if (quoteContent) {
+                quoteContent.innerHTML = text;
+                // 如果有特別設定 fontSize，就套用到這張卡片
+                if (fontSize) {
+                    quoteContent.style.fontSize = fontSize;
+                }
+            }
+
+            // 把這張新卡片接在網頁的最底下
+            document.body.appendChild(newPost);
+        });
+    </script>
+    <!-- ▲▲▲ 結束貼上 ▲▲▲ -->
+
+    <!-- ▼▼▼ 圖片下載工具腳本 ▼▼▼ -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+        // 等待前面的自動生成執行完畢後再加入按鈕
+        setTimeout(() => {
+            const wrappers = document.querySelectorAll('body > div');
+            wrappers.forEach((wrapper, index) => {
+                const label = wrapper.querySelector('.label');
+                const post = wrapper.querySelector('.ig-post');
+                if (label && post) {
+                    const btn = document.createElement('button');
+                    btn.innerText = '⬇️ 下載這張';
+                    btn.style.marginLeft = 'auto'; // 推到最右邊
+                    btn.style.padding = '4px 12px';
+                    btn.style.cursor = 'pointer';
+                    btn.style.backgroundColor = 'var(--theme-color)';
+                    btn.style.color = '#fff';
+                    btn.style.border = 'none';
+                    btn.style.borderRadius = '4px';
+                    btn.style.fontSize = '12px';
+
+                    btn.onclick = () => {
+                        const originalText = btn.innerText;
+                        btn.innerText = '⏳ 處理中...';
+                        html2canvas(post, {
+                            scale: 4, // 4倍超高畫質 (確保 Instagram 上傳極度清晰，解析度會是 2000x2000)
+                            useCORS: true
+                        }).then(canvas => {
+                            const link = document.createElement('a');
+                            let fileNameText = label.innerText.replace('⬇️ 下載這張', '').replace('✅ 下載成功', '').trim();
+                            link.download = `${fileNameText}.png`;
+                            link.href = canvas.toDataURL('image/png');
+                            link.click();
+                            btn.innerText = '✅ 下載成功';
+                            setTimeout(() => { btn.innerText = originalText; }, 2000);
+                        }).catch(err => {
+                            console.error("下載失敗：", err);
+                            alert("下載失敗 😢\n如果是由於瀏覽器的「本地檔案讀取限制」，建議把 HTML 先拖進 VSCode 中，用滑鼠右鍵選擇「Open with Live Server」在本地伺服器環境中打開，就能順利下載圖片喔！");
+                            btn.innerText = originalText;
+                        });
+                    };
+
+                    label.appendChild(btn);
+                    label.style.display = 'flex';
+                    label.style.alignItems = 'center';
+                }
+            });
+
+            // 加入「一次下載全部」按鈕在畫面右上角
+            const downloadAllBtn = document.createElement('button');
+            downloadAllBtn.innerText = '📂 批次下載（你想下的 4 張）';
+            downloadAllBtn.style.position = 'fixed';
+            downloadAllBtn.style.top = '20px';
+            downloadAllBtn.style.right = '20px';
+            downloadAllBtn.style.padding = '12px 20px';
+            downloadAllBtn.style.backgroundColor = 'var(--navy-deep)';
+            downloadAllBtn.style.color = 'white';
+            downloadAllBtn.style.border = 'none';
+            downloadAllBtn.style.borderRadius = '8px';
+            downloadAllBtn.style.fontWeight = 'bold';
+            downloadAllBtn.style.cursor = 'pointer';
+            downloadAllBtn.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+            downloadAllBtn.style.zIndex = '9999';
+
+            downloadAllBtn.onclick = async () => {
+                downloadAllBtn.innerText = '⏳ 全部下載中...';
+
+                // 找出指定的：Style 02 原版，以及三個自動產生的 Style 01
+                const targetLabelsText = [
+                    "Style 02 - 沉浸播放 (原版)",
+                    "Style 01 - 自動產生 1",
+                    "Style 01 - 自動產生 2",
+                    "Style 01 - 自動產生 3"
+                ];
+
+                for (let wrapper of wrappers) {
+                    const label = wrapper.querySelector('.label');
+                    const post = wrapper.querySelector('.ig-post');
+                    if (!label || !post) continue;
+
+                    const labelText = label.innerText.replace('⬇️ 下載這張', '').replace('✅ 下載成功', '').trim();
+                    if (targetLabelsText.includes(labelText)) {
+                        try {
+                            const canvas = await html2canvas(post, { scale: 4, useCORS: true });
+                            const link = document.createElement('a');
+                            link.download = `${labelText}.png`;
+                            link.href = canvas.toDataURL('image/png');
+                            link.click();
+                            // 加入小延遲，避免瀏覽器以為是垃圾彈出視窗而阻擋多個下載
+                            await new Promise(resolve => setTimeout(resolve, 800));
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    }
+                }
+                downloadAllBtn.innerText = '✅ 批次下載完成';
+                setTimeout(() => { downloadAllBtn.innerText = '📂 批次下載（你想下的 4 張）'; }, 3000);
+            };
+            document.body.appendChild(downloadAllBtn);
+        }, 500);
+    </script>
+    <!-- ▲▲▲ 圖片下載工具腳本結束 ▲▲▲ -->
+</body>
+
+</html>
